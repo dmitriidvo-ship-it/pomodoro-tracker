@@ -1,204 +1,25 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Трекер работы 🍅 — Метод Помодоро</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Мультитул 🍅 — Помодоро + Word→PDF</title>
   <style>
     body {
-      font-family: 'Segoe UI', system-ui, sans-serif;
+      font-family: 'Segoe UI', system-ui, -apple-system, Roboto, "Helvetica Neue", Arial;
       background: linear-gradient(135deg, #fff0f0, #ffdede);
       margin: 0;
-      padding: 0;
+      min-height: 100vh;
       display: flex;
-      flex-direction: column;
       align-items: center;
       justify-content: center;
-      height: 100vh;
       overflow: hidden;
     }
 
-    main {
-      display: flex;
-      align-items: stretch;
-      justify-content: center;
-      width: 100%;
-      max-width: 1300px;
-      padding: 40px;
-      gap: 30px;
-      box-sizing: border-box;
-    }
-
-    aside {
-      flex: 1;
-      background: rgba(255, 255, 255, 0.75);
-      backdrop-filter: blur(10px);
-      border-radius: 20px;
-      padding: 25px 30px;
-      box-shadow: 0 4px 20px rgba(0,0,0,0.08);
-      color: #333;
-      line-height: 1.6;
-      animation: fadeIn 0.6s ease forwards;
-    }
-
-    aside h2 {
-      font-size: 1.4em;
-      color: #e43c3c;
-      margin-bottom: 10px;
-    }
-
-    aside ul {
-      padding-left: 20px;
-      margin: 10px 0;
-    }
-
-    aside li {
-      margin-bottom: 8px;
-    }
-
-    .center {
-      flex: 1.3;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      flex-direction: column;
-    }
-
-    .card {
-      background: rgba(255, 255, 255, 0.85);
-      backdrop-filter: blur(8px);
-      border-radius: 20px;
-      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-      padding: 30px 40px;
-      text-align: center;
-      max-width: 400px;
-      display: none;
-      animation: fadeIn 0.6s ease forwards;
-    }
-
-    @keyframes fadeIn {
-      from {opacity: 0; transform: translateY(15px);}
-      to {opacity: 1; transform: translateY(0);}
-    }
-
-    img {
-      width: 80px;
-      margin-bottom: 10px;
-    }
-
-    h1 {
-      font-size: 1.8em;
-      margin-bottom: 5px;
-      color: #333;
-    }
-
-    p {
-      color: #666;
-      margin-bottom: 15px;
-    }
-
-    #progressContainer {
-      position: relative;
-      width: 180px;
-      height: 180px;
-      margin: 0 auto 20px;
-    }
-
-    svg {
-      transform: rotate(-90deg);
-      width: 180px;
-      height: 180px;
-    }
-
-    circle {
-      fill: none;
-      stroke-width: 12;
-      stroke-linecap: round;
-    }
-
-    .bg {
-      stroke: #ffd6d6;
-    }
-
-    .progress {
-      stroke: #ff4b4b;
-      transition: stroke-dashoffset 1s linear;
-    }
-
-    #timer {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      font-size: 2.5em;
-      font-weight: bold;
-      color: #333;
-    }
-
-    .buttons {
-      display: flex;
-      justify-content: center;
-      gap: 10px;
-      flex-wrap: wrap;
-    }
-
-    button {
-      background-color: #ff4b4b;
-      border: none;
-      color: white;
-      padding: 10px 20px;
-      border-radius: 10px;
-      cursor: pointer;
-      font-size: 1em;
-      transition: background-color 0.2s, transform 0.1s;
-    }
-
-    button:hover {
-      background-color: #ff2f2f;
-      transform: scale(1.05);
-    }
-
-    button.secondary {
-      background-color: #aaa;
-    }
-
-    .hidden {
-      display: none;
-    }
-
-    #survey {
-      margin-top: 25px;
-      text-align: left;
-    }
-
-    textarea {
-      width: 100%;
-      height: 80px;
-      border-radius: 8px;
-      border: 1px solid #ccc;
-      padding: 8px;
-      font-family: inherit;
-      resize: none;
-    }
-
-    #submitFeedback {
-      margin-top: 10px;
-      width: 100%;
-      background-color: #4CAF50;
-    }
-
-    #submitFeedback:hover {
-      background-color: #3b8e41;
-    }
-
-    /* ---- Modal ---- */
-    #modeModal {
+    .modal {
       position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: rgba(0, 0, 0, 0.4);
+      inset: 0;
+      background: rgba(0, 0, 0, .5);
       display: flex;
       align-items: center;
       justify-content: center;
@@ -207,138 +28,758 @@
 
     .modal-content {
       background: #fff;
-      border-radius: 20px;
-      padding: 30px 40px;
+      border-radius: 16px;
+      padding: 28px 32px;
       text-align: center;
-      animation: fadeIn 0.5s ease forwards;
-      box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+      box-shadow: 0 8px 30px rgba(0, 0, 0, .2);
+      animation: pop .16s ease;
     }
 
-    .mode-btns {
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-      margin-top: 15px;
+    @keyframes pop {
+      from { transform: scale(.98); opacity: 0 }
+      to { transform: none; opacity: 1 }
     }
 
-    .mode-btn {
-      background-color: #ff4b4b;
+    .choice-btn {
+      display: block;
+      margin: 10px auto;
+      background: #ff4b4b;
       color: #fff;
       border: none;
-      padding: 10px 20px;
+      padding: 12px 22px;
       border-radius: 12px;
-      font-size: 1em;
+      font-size: 16px;
       cursor: pointer;
+      transition: all .12s;
+    }
+    /* ==== TODO-лист (планировщик задач) ==== */
+
+#todoSection {
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(15px);
+  border-radius: 24px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+  padding: 40px;
+  width: 600px;
+  max-width: 90%;
+  transition: all 0.3s ease;
+}
+
+#todoSection h2 {
+  color: #e74c3c;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  text-shadow: 0 1px 2px rgba(231, 76, 60, 0.2);
+  margin-bottom: 24px;
+}
+
+/* Поле ввода и кнопка добавления */
+#newTaskInput {
+  background: #fff;
+  border: 2px solid rgba(231, 76, 60, 0.2);
+  border-right: none;
+  border-radius: 16px 0 0 16px;
+  padding: 12px 16px;
+  font-size: 16px;
+  color: #333;
+  transition: all 0.2s;
+}
+
+#newTaskInput:focus {
+  outline: none;
+  border-color: #e74c3c;
+  box-shadow: 0 0 6px rgba(231, 76, 60, 0.3);
+}
+
+#addTaskBtn {
+  border-radius: 0 16px 16px 0;
+  padding: 12px 20px;
+  background: linear-gradient(135deg, #e74c3c, #ff6b5a);
+  border: none;
+  color: #fff;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+
+#addTaskBtn:hover {
+  background: linear-gradient(135deg, #ff7a66, #e74c3c);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(231, 76, 60, 0.4);
+}
+
+/* Список задач */
+#taskList {
+  list-style: none;
+  width: 100%;
+  padding: 0;
+  margin-top: 10px;
+  max-height: 300px;
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: #e74c3c #f2f2f2;
+}
+
+#taskList::-webkit-scrollbar {
+  width: 8px;
+}
+
+#taskList::-webkit-scrollbar-thumb {
+  background-color: #e74c3c;
+  border-radius: 4px;
+}
+
+/* Отдельная задача */
+#taskList li {
+  background: #fff;
+  border: 1.5px solid rgba(0, 0, 0, 0.05);
+  border-left: 6px solid #e74c3c;
+  padding: 10px 14px;
+  border-radius: 14px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  transition: all 0.2s ease;
+}
+
+#taskList li:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+}
+
+#taskList li span {
+  font-size: 16px;
+  color: #333;
+  transition: color 0.2s;
+}
+
+#taskList li input[type="checkbox"] {
+  accent-color: #e74c3c;
+  transform: scale(1.2);
+}
+
+#taskList li button {
+  background: none;
+  border: none;
+  color: #e74c3c;
+  font-size: 22px;
+  line-height: 1;
+  cursor: pointer;
+  transition: color 0.2s ease, transform 0.2s ease;
+}
+
+#taskList li button:hover {
+  color: #c0392b;
+  transform: scale(1.2);
+}
+
+/* Зачёркнутые задачи */
+#taskList li span.line-through {
+  color: #999;
+  text-decoration: line-through;
+}
+
+/* Кнопка очистки */
+#clearTasksBtn {
+  background: #f4f4f4;
+  color: #444;
+  font-weight: 500;
+  border: none;
+  padding: 10px 18px;
+  border-radius: 12px;
+  cursor: pointer;
+  margin-top: 20px;
+  transition: all 0.25s ease;
+}
+
+#clearTasksBtn:hover {
+  background: #e74c3c;
+  color: #fff;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 10px rgba(231, 76, 60, 0.3);
+}
+
+    .choice-btn:hover {
+      transform: scale(1.03);
+      background: #ff2f2f;
+    }
+
+    .container {
+      display: flex;
+      gap: 28px;
+      align-items: flex-start;
+      max-width: 1200px;
+      padding: 28px;
+      width: 100%;
+      box-sizing: border-box;
+      transition: all 0.4s ease;
+    }
+
+    .panel {
+      background: rgba(255, 255, 255, .85);
+      backdrop-filter: blur(8px);
+      border-radius: 14px;
+      padding: 20px;
+      box-shadow: 0 6px 20px rgba(0, 0, 0, .08);
+      flex: 1;
+      transition: all 0.3s ease;
+    }
+
+    .center {
+      flex: 1.1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 18px;
+    }
+
+    h1 { margin: 0; color: #333; font-size: 20px }
+    p { color: #555; margin: 8px 0 }
+
+    /* --- Pomodoro --- */
+    .card {
+      width: 100%;
+      max-width: 420px;
+      text-align: center;
+      padding: 26px;
+      border-radius: 14px;
+    }
+
+    #progressContainer {
+      position: relative;
+      width: 160px;
+      height: 160px;
+      margin: 10px auto;
+    }
+
+    svg { transform: rotate(-90deg); width: 160px; height: 160px }
+    circle { fill: none; stroke-width: 12; stroke-linecap: round }
+    .bg { stroke: #ffd6d6 }
+    .progress { stroke: #ff4b4b; transition: stroke-dashoffset .6s linear }
+
+    #timer {
+      position: absolute;
+      left: 50%; top: 50%;
+      transform: translate(-50%, -50%);
+      font-size: 28px; font-weight: 700; color: #333;
+    }
+
+    .buttons { display: flex; gap: 10px; justify-content: center }
+    .btn {
+      background: #ff4b4b; color: #fff;
+      padding: 10px 16px; border-radius: 10px; border: none;
+      cursor: pointer; font-weight: 600;
+      transition: all 0.2s ease;
+    }
+    .btn:hover { transform: scale(1.03); }
+    .btn.secondary { background: #999 }
+    .hidden { display: none }
+    textarea {
+      width: 100%; height: 84px; border-radius: 8px;
+      border: 1px solid #d0d0d0; padding: 8px;
+      resize: none; font-family: inherit;
+    }
+    /* ==== Кнопка "Назад в меню" ==== */
+#backToMenu {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  background: linear-gradient(135deg, #e74c3c, #ff6b5a);
+  color: white;
+  font-weight: 600;
+  font-size: 15px;
+  border: none;
+  border-radius: 12px;
+  padding: 10px 18px;
+  cursor: pointer;
+  box-shadow: 0 4px 10px rgba(231, 76, 60, 0.3);
+  transition: all 0.25s ease;
+  z-index: 1000;
+}
+
+#backToMenu:hover {
+  background: linear-gradient(135deg, #ff7a66, #e74c3c);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 14px rgba(231, 76, 60, 0.45);
+}
+
+#backToMenu:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 6px rgba(231, 76, 60, 0.2);
+}
+
+
+    /* --- Converter --- */
+    #converter {
+      width: 100%;
+      max-width: 700px;
+      margin: 0 auto;
+      text-align: center;
+      padding: 40px 40px 50px;
+      border-radius: 16px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+      background: rgba(255, 255, 255, 0.92);
+      backdrop-filter: blur(6px);
+      transform: translateY(0);
+      animation: slideUp 0.4s ease;
+    }
+
+    @keyframes slideUp {
+      from { opacity: 0; transform: translateY(30px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    #converter h1 {
+      font-size: 28px;
+      color: #222;
+    }
+
+    #converter p {
+      color: #666;
+      font-size: 15px;
+      margin-bottom: 20px;
+    }
+
+    input[type=file] {
+      display: block;
+      margin: 20px auto;
+      background: #fff;
+      border: 1px dashed #aaa;
+      border-radius: 10px;
+      padding: 12px;
+      width: 80%;
+      cursor: pointer;
+      transition: border-color 0.3s ease;
+    }
+
+    input[type=file]:hover {
+      border-color: #ff4b4b;
+    }
+
+    #convertBtn {
+      margin-top: 8px;
+      background: #0b66d1;
+      padding: 12px 24px;
+      border-radius: 10px;
+      font-size: 16px;
+    }
+
+    #convertBtn:hover {
+      background: #0854aa;
+    }
+
+    #status {
+      margin-top: 10px;
+      color: #666;
+      font-size: 14px;
+    }
+
+    a#downloadLink {
+      display: inline-block;
+      margin-top: 20px;
+      color: #0b66d1;
+      text-decoration: none;
+      font-weight: 600;
+      background: #e9f0ff;
+      padding: 10px 20px;
+      border-radius: 10px;
       transition: all 0.2s;
     }
 
-    .mode-btn:hover {
-      background-color: #ff2f2f;
-      transform: scale(1.05);
+    a#downloadLink:hover {
+      background: #d6e4ff;
     }
 
-    footer {
-      text-align: center;
-      font-size: 0.9em;
-      color: #888;
-      padding: 10px;
+    @media(max-width: 900px) {
+      .container { flex-direction: column; padding: 18px }
+      .panel { width: 100% }
     }
+    /* ==== Кнопки в главном меню ==== */
+#toolModal button {
+  min-width: 220px;
+  padding: 14px 22px;
+  font-size: 16px;
+  font-weight: 600;
+  border-radius: 16px;
+  border: none;
+  cursor: pointer;
+  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.15);
+  transition: all 0.25s ease;
+  color: white;
+}
 
-    @media (max-width: 950px) {
-      main {
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        gap: 20px;
-      }
-      aside {
-        max-width: 90%;
-      }
-    }
+/* Помодоро */
+#choosePomodoro {
+  background: linear-gradient(135deg, #e74c3c, #ff6b5a);
+}
+#choosePomodoro:hover {
+  background: linear-gradient(135deg, #ff7a66, #e74c3c);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 18px rgba(231, 76, 60, 0.4);
+}
+
+/* Конвертер */
+#chooseConverter {
+  background: linear-gradient(135deg, #27ae60, #2ecc71);
+}
+#chooseConverter:hover {
+  background: linear-gradient(135deg, #2ecc71, #27ae60);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 18px rgba(39, 174, 96, 0.4);
+}
+/* ==== Центрирование секции планировщика ==== */
+#todoSection {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(15px);
+  border-radius: 24px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+  padding: 40px;
+  width: 600px;
+  max-width: 90%;
+  transition: all 0.3s ease;
+  text-align: center;
+}
+
+
+/* Планировщик задач */
+#chooseTodo {
+  background: linear-gradient(135deg, #3498db, #5dade2);
+}
+#chooseTodo:hover {
+  background: linear-gradient(135deg, #5dade2, #3498db);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 18px rgba(52, 152, 219, 0.4);
+}
+
+/* Анимация нажатия */
+#toolModal button:active {
+  transform: scale(0.97);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+/* ====== 📱 АДАПТИВ ДЛЯ МОБИЛЬНЫХ ====== */
+
+/* Общие правки */
+body {
+  overflow-x: hidden;
+}
+
+@media (max-width: 1024px) {
+  #leftPanel,
+  #rightPanel {
+    display: none !important;
+  }
+}
+
+/* ---------- Помодоро ---------- */
+@media (max-width: 768px) {
+  #pomodoroCard {
+    width: 90%;
+    padding: 20px;
+    border-radius: 20px;
+  }
+
+  #pomodoroCard h2 {
+    font-size: 1.4rem;
+  }
+
+  #timer {
+    font-size: 2.8rem;
+  }
+
+  .controls button {
+    padding: 10px 14px;
+    font-size: 14px;
+  }
+
+  #survey textarea {
+    width: 90%;
+    font-size: 14px;
+  }
+}
+
+/* ---------- Конвертер ---------- */
+@media (max-width: 768px) {
+  #converter {
+    width: 90%;
+    padding: 25px;
+    border-radius: 20px;
+  }
+
+  #converter h2 {
+    font-size: 1.4rem;
+  }
+
+  #convertBtn {
+    padding: 10px 16px;
+    font-size: 15px;
+  }
+
+  #wordFile {
+    width: 100%;
+  }
+
+  #status {
+    font-size: 14px;
+  }
+}
+
+/* ---------- Планировщик задач ---------- */
+@media (max-width: 768px) {
+  #todoSection {
+    position: static;
+    transform: none;
+    width: 90%;
+    margin: 80px auto;
+    padding: 25px;
+    border-radius: 20px;
+  }
+
+  #todoSection h2 {
+    font-size: 1.4rem;
+  }
+
+  #newTaskInput {
+    width: 65%;
+    font-size: 14px;
+    padding: 10px;
+  }
+
+  #addTaskBtn {
+    font-size: 14px;
+    padding: 10px 12px;
+  }
+
+  #taskList li {
+    font-size: 14px;
+    padding: 8px 10px;
+  }
+
+  #clearTasksBtn {
+    font-size: 14px;
+    padding: 8px 14px;
+  }
+}
+
+/* ---------- Меню выбора инструмента ---------- */
+@media (max-width: 768px) {
+  #toolModal {
+    flex-direction: column;
+    gap: 16px;
+    text-align: center;
+    padding: 20px;
+  }
+
+  #toolModal h2 {
+    font-size: 1.4rem;
+  }
+
+  #toolModal button {
+    min-width: unset;
+    width: 90%;
+    font-size: 15px;
+    padding: 12px 0;
+  }
+}
+
+/* ---------- Кнопка "Назад в меню" ---------- */
+@media (max-width: 768px) {
+  #backToMenu {
+    top: 10px;
+    right: 10px;
+    padding: 8px 14px;
+    font-size: 13px;
+    border-radius: 10px;
+  }
+}
+
+
   </style>
 </head>
 <body>
 
-  <!-- Модальное окно выбора режима -->
-  <div id="modeModal">
+  <!-- Модальное окно -->
+  <div id="toolModal" class="modal" role="dialog" aria-modal="true">
     <div class="modal-content">
-      <h2>🍅 Выбери режим работы</h2>
-      <p>Настрой темп под себя</p>
-      <div class="mode-btns">
-        <button class="mode-btn" data-work="30" data-break="10">🍅 30 мин работы / 10 отдыха</button>
-        <button class="mode-btn" data-work="10" data-break="5">⚡ 10 мин работы / 5 отдыха</button>
-        <button class="mode-btn" data-work="5" data-break="5">🎯 5 мин работы / 5 отдыха</button>
-      </div>
+      <h2>🔧 Что вам нужно?</h2>
+      <p>Выберите инструмент</p>
+      <button id="choosePomodoro" class="choice-btn">🍅 Метод Помодоро</button>
+      <button id="chooseConverter" class="choice-btn">📄 Конвертер Word → PDF</button>
+      <button id="chooseTodo" class="bg-[#3498db] text-white px-6 py-3 rounded-xl shadow-md hover:bg-[#2980b9] transition">
+  Планировщик задач
+</button>
+
     </div>
   </div>
 
-  <main>
-    <!-- Левая колонка -->
-    <aside>
-      <h2>🍅 Что такое метод Помодоро</h2>
-      <p>
-        Метод <b>Помодоро</b> — это техника тайм-менеджмента, основанная на коротких циклах концентрации и отдыха.
-      </p>
+  <!-- Контейнер -->
+  <div id="mainUI" class="container hidden">
+    <aside id="leftPanel" class="panel">
+      <h3 style="color:#e43c3c">🍅 Метод Помодоро</h3>
+      <p><strong>Коротко:</strong> работа в интенсивных сессиях с короткими перерывами.</p>
       <ul>
-        <li>Работаешь 25–30 минут без отвлечений.</li>
-        <li>Делаешь короткий перерыв (5–10 минут).</li>
-        <li>После 4 циклов — длинный отдых (20–30 минут).</li>
+        <li>Фокус 25–30 минут → короткий перерыв 5–10 минут.</li>
+        <li>После 4 циклов — длинный отдых.</li>
+        <li>Записывай отвлекающие мысли в блокнот.</li>
       </ul>
-      <p>
-        Такой подход помогает бороться с прокрастинацией, поддерживать концентрацию и не выгорать.
-      </p>
     </aside>
+    <!-- Кнопка "Назад в меню" -->
+<button id="backToMenu" class="hidden fixed top-5 right-5 bg-[#e74c3c] text-white px-4 py-2 rounded-xl shadow-md hover:bg-[#c0392b] transition">
+  ← Назад в меню
+</button>
 
-    <!-- Центр -->
     <div class="center">
-      <div class="card" id="mainCard">
-        <img src="https://cdn-icons-png.flaticon.com/512/2909/2909592.png" alt="Помидорка">
+      <!-- Pomodoro -->
+      <div id="pomodoroCard" class="card hidden panel">
+        <img src="https://cdn-icons-png.flaticon.com/512/2909/2909592.png" alt="Помидорка" style="width:72px">
         <h1>Трекер работы 🍅</h1>
-        <p id="modeLabel">Время работы</p>
+        <p id="modeLabel">30 минут работы</p>
 
         <div id="progressContainer">
           <svg>
-            <circle class="bg" cx="90" cy="90" r="80"></circle>
-            <circle class="progress" cx="90" cy="90" r="80"></circle>
+            <circle class="bg" cx="80" cy="80" r="70"></circle>
+            <circle class="progress" cx="80" cy="80" r="70"></circle>
           </svg>
           <div id="timer">30:00</div>
         </div>
 
         <div class="buttons">
-          <button id="startBtn">Старт</button>
-          <button id="pauseBtn" class="secondary hidden">Пауза</button>
-          <button id="resetBtn" class="secondary">Сброс</button>
+          <button id="startBtn" class="btn">Старт</button>
+          <button id="pauseBtn" class="btn secondary hidden">Пауза</button>
+          <button id="resetBtn" class="btn secondary">Сброс</button>
         </div>
 
-        <div id="survey" class="hidden">
-          <h3>Как ты оцениваешь свою работу?</h3>
-          <textarea id="feedback" placeholder="Напиши короткий отзыв..."></textarea>
-          <button id="submitFeedback">Отправить и начать отдых</button>
+        <div id="survey" class="hidden" style="margin-top:14px;text-align:left">
+          <h4>Как ты оцениваешь свою работу?</h4>
+          <textarea id="feedback" placeholder="Короткая заметка..."></textarea>
+          <button id="submitFeedback" class="btn" style="width:100%;margin-top:8px">Отправить и начать отдых</button>
         </div>
       </div>
+
+      <!-- Конвертер -->
+      <div id="converter" class="panel hidden">
+        <h1>📄 Конвертер Word → PDF</h1>
+        <p>Выберите <strong>.docx</strong> файл, и он будет преобразован в PDF прямо в вашем браузере.</p>
+        <input id="wordFile" type="file" accept=".docx" />
+        <button id="convertBtn" class="btn">Конвертировать</button>
+        <div id="status"></div>
+        <a id="downloadLink" class="hidden" download="converted.pdf">⬇️ Скачать PDF</a>
+      </div>
     </div>
+    <!-- ========== ПЛАНИРОВЩИК ЗАДАЧ ========== -->
+<div id="todoSection" class="hidden flex flex-col items-center justify-start bg-white/80 backdrop-blur-md rounded-3xl shadow-2xl p-8 w-[600px] max-w-[90%]">
+  <h2 class="text-2xl font-bold mb-6 text-[#e74c3c]">📋 Планировщик задач</h2>
+  
+  <div class="flex w-full mb-4">
+    <input 
+      id="newTaskInput" 
+      type="text" 
+      placeholder="Введите задачу..." 
+      class="flex-grow p-3 rounded-l-xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#e74c3c]"
+    />
+    <button 
+      id="addTaskBtn" 
+      class="bg-[#e74c3c] text-white px-5 rounded-r-xl hover:bg-[#c0392b] transition">
+      ➕
+    </button>
+  </div>
 
-    <!-- Правая колонка -->
-    <aside>
-      <h2>💡 Советы для продуктивности</h2>
+  <ul id="taskList" class="w-full space-y-2 max-h-[300px] overflow-y-auto pr-2"></ul>
+
+  <button 
+    id="clearTasksBtn" 
+    class="mt-6 bg-gray-200 hover:bg-gray-300 text-gray-700 px-4 py-2 rounded-xl transition">
+    Очистить все задачи
+  </button>
+</div>
+
+
+    <aside id="rightPanel" class="panel">
+      <h3 style="color:#e43c3c">💡 Советы для учёбы</h3>
       <ul>
-        <li>Перед началом выбери конкретную задачу.</li>
-        <li>Убери отвлекающие факторы: телефон, уведомления.</li>
-        <li>Во время отдыха — не смотри экран, подвигайся.</li>
-        <li>Используй блокнот для идей, что всплывают во время работы.</li>
-        <li>После каждого цикла оцени свой фокус и настрой.</li>
+        <li>Планируй задачи заранее.</li>
+        <li>Отключай уведомления.</li>
+        <li>Во время перерыва двигайся.</li>
       </ul>
-      <p>
-        Главное — стабильность. Даже 2–3 «помидора» в день дают реальный результат 🌱
-      </p>
     </aside>
-  </main>
-
-  <footer>
-    Сделано с любовью к продуктивности © 2025
-  </footer>
+  </div>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.6.0/mammoth.browser.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/pdfmake.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/vfs_fonts.js"></script>
 
   <script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.6.0/mammoth.browser.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/pdfmake.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/vfs_fonts.js"></script>
+
+<script>
+  // Элементы интерфейса
+  const toolModal = document.getElementById('toolModal');
+  const mainUI = document.getElementById('mainUI');
+  const choosePomodoro = document.getElementById('choosePomodoro');
+  const chooseConverter = document.getElementById('chooseConverter');
+  const chooseTodo = document.getElementById('chooseTodo');
+  const pomodoroCard = document.getElementById('pomodoroCard');
+  const converterCard = document.getElementById('converter');
+  const todoSection = document.getElementById('todoSection');
+  const leftPanel = document.getElementById('leftPanel');
+  const rightPanel = document.getElementById('rightPanel');
+  const backToMenu = document.getElementById('backToMenu');
+
+  // Общая функция: скрыть всё
+  function hideAllTools() {
+    pomodoroCard.classList.add('hidden');
+    converterCard.classList.add('hidden');
+    todoSection.classList.add('hidden');
+    leftPanel.classList.add('hidden');
+    rightPanel.classList.add('hidden');
+  }
+
+  // Общая функция: показать выбранный инструмент
+  function openTool(tool) {
+    toolModal.style.display = 'none';
+    mainUI.classList.remove('hidden');
+    backToMenu.classList.remove('hidden');
+    hideAllTools();
+
+    switch (tool) {
+      case 'pomodoro':
+        pomodoroCard.classList.remove('hidden');
+        leftPanel.classList.remove('hidden');
+        rightPanel.classList.remove('hidden');
+        initPomodoro();
+        break;
+      case 'converter':
+        converterCard.classList.remove('hidden');
+        break;
+      case 'todo':
+        todoSection.classList.remove('hidden');
+        initTodo();
+        break;
+    }
+  }
+
+  // Кнопка "Назад"
+  function showMainMenu() {
+    toolModal.style.display = 'flex';
+    mainUI.classList.add('hidden');
+    backToMenu.classList.add('hidden');
+    hideAllTools();
+  }
+
+  backToMenu.addEventListener('click', showMainMenu);
+
+  // Обработчики выбора инструмента
+  choosePomodoro.addEventListener('click', () => openTool('pomodoro'));
+  chooseConverter.addEventListener('click', () => openTool('converter'));
+  chooseTodo.addEventListener('click', () => openTool('todo'));
+
+  // ======== ПОМОДОРО ========
+  function initPomodoro() {
     const timerEl = document.getElementById("timer");
     const startBtn = document.getElementById("startBtn");
     const pauseBtn = document.getElementById("pauseBtn");
@@ -348,10 +789,8 @@
     const feedbackInput = document.getElementById("feedback");
     const submitFeedbackBtn = document.getElementById("submitFeedback");
     const progressCircle = document.querySelector(".progress");
-    const modal = document.getElementById("modeModal");
-    const mainCard = document.getElementById("mainCard");
 
-    const radius = 80;
+    const radius = 70;
     const circumference = 2 * Math.PI * radius;
     progressCircle.style.strokeDasharray = circumference;
     progressCircle.style.strokeDashoffset = 0;
@@ -418,7 +857,7 @@
         surveyEl.classList.remove("hidden");
       } else {
         isBreak = false;
-        modeLabel.textContent = "Время работы";
+        modeLabel.textContent = "30 минут работы";
         timeLeft = WORK_TIME;
         totalTime = WORK_TIME;
         updateTimerDisplay();
@@ -429,23 +868,11 @@
       feedbackInput.value = "";
       surveyEl.classList.add("hidden");
       isBreak = true;
-      modeLabel.textContent = "Время отдыха";
+      modeLabel.textContent = "10 минут отдыха";
       timeLeft = BREAK_TIME;
       totalTime = BREAK_TIME;
       updateTimerDisplay();
       startTimer();
-    });
-
-    document.querySelectorAll(".mode-btn").forEach(btn => {
-      btn.addEventListener("click", () => {
-        WORK_TIME = btn.dataset.work * 60;
-        BREAK_TIME = btn.dataset.break * 60;
-        timeLeft = WORK_TIME;
-        totalTime = WORK_TIME;
-        updateTimerDisplay();
-        modal.style.display = "none";
-        mainCard.style.display = "block";
-      });
     });
 
     startBtn.addEventListener("click", startTimer);
@@ -453,6 +880,140 @@
     resetBtn.addEventListener("click", resetTimer);
 
     updateTimerDisplay();
+  }
+
+  // ======== КОНВЕРТЕР DOCX → PDF ========
+  const input = document.getElementById("wordFile");
+  const convertBtn = document.getElementById("convertBtn");
+  const status = document.getElementById("status");
+  const downloadLink = document.getElementById("downloadLink");
+
+  function setStatus(text, error = false) {
+    status.textContent = text;
+    status.style.color = error ? "#b22222" : "#444";
+  }
+
+  function htmlToPdfMakeContent(html) {
+    const container = document.createElement("div");
+    container.innerHTML = html;
+    const content = [];
+    function walk(node) {
+      if (node.nodeType === Node.TEXT_NODE) return node.textContent;
+      if (node.nodeType !== Node.ELEMENT_NODE) return "";
+      const tag = node.tagName.toLowerCase();
+      if (tag === "p") { content.push({ text: (node.innerText || node.textContent) + "\n\n" }); return; }
+      if (/^h[1-6]$/.test(tag)) {
+        const size = { h1: 20, h2: 18, h3: 16, h4: 14, h5: 13, h6: 12 }[tag];
+        content.push({ text: (node.innerText || node.textContent) + "\n\n", fontSize: size, bold: true });
+        return;
+      }
+      if (tag === "li") { content.push({ text: "• " + (node.innerText || node.textContent) + "\n" }); return; }
+      Array.from(node.childNodes).forEach(walk);
+    }
+    Array.from(container.childNodes).forEach(walk);
+    return content.length ? content : [{ text: container.innerText || container.textContent || "" }];
+  }
+
+  convertBtn.addEventListener("click", () => {
+    const file = input.files[0];
+    if (!file) {
+      setStatus("Выберите .docx файл", true);
+      return;
+    }
+
+    setStatus("Конвертирую...");
+    const reader = new FileReader();
+    reader.onload = async (e) => {
+      try {
+        const res = await mammoth.convertToHtml({ arrayBuffer: e.target.result });
+        const html = res.value || "";
+        const content = htmlToPdfMakeContent(html);
+        const doc = {
+          content,
+          defaultStyle: { fontSize: 12 },
+          pageMargins: [40, 40, 40, 40],
+        };
+        pdfMake.createPdf(doc).getBlob((blob) => {
+          const url = URL.createObjectURL(blob);
+          downloadLink.href = url;
+          downloadLink.download = file.name.replace(/\.docx$/i, ".pdf");
+          downloadLink.classList.remove("hidden");
+          setStatus("Готово ✅");
+        });
+      } catch (err) {
+        console.error(err);
+        setStatus("Ошибка при конвертации", true);
+      }
+    };
+    reader.readAsArrayBuffer(file);
+  });
+
+  // ======== TODO ========
+  function initTodo() {
+    const newTaskInput = document.getElementById("newTaskInput");
+    const addTaskBtn = document.getElementById("addTaskBtn");
+    const taskList = document.getElementById("taskList");
+    const clearTasksBtn = document.getElementById("clearTasksBtn");
+
+    let tasks = JSON.parse(localStorage.getItem("tasks") || "[]");
+    renderTasks();
+
+    addTaskBtn.onclick = () => {
+      const text = newTaskInput.value.trim();
+      if (!text) return;
+      tasks.push({ text, done: false });
+      newTaskInput.value = "";
+      saveAndRender();
+    };
+
+    newTaskInput.addEventListener("keypress", (e) => {
+      if (e.key === "Enter") addTaskBtn.click();
+    });
+
+    clearTasksBtn.onclick = () => {
+      if (confirm("Очистить все задачи?")) {
+        tasks = [];
+        saveAndRender();
+      }
+    };
+
+    function saveAndRender() {
+      localStorage.setItem("tasks", JSON.stringify(tasks));
+      renderTasks();
+    }
+
+    function renderTasks() {
+      taskList.innerHTML = "";
+      tasks.forEach((t, i) => {
+        const li = document.createElement("li");
+        li.className =
+          "flex items-center justify-between bg-white rounded-xl shadow p-3 border border-gray-200";
+        li.innerHTML = `
+          <span class="flex items-center gap-2">
+            <input type="checkbox" ${t.done ? "checked" : ""} class="h-4 w-4 accent-[#e74c3c]" />
+            <span class="${t.done ? "line-through text-gray-400" : "text-gray-700"}">${t.text}</span>
+          </span>
+          <button class="text-[#e74c3c] hover:text-[#c0392b] font-bold text-lg">&times;</button>
+        `;
+        const checkbox = li.querySelector("input");
+        const deleteBtn = li.querySelector("button");
+
+        checkbox.onchange = () => {
+          tasks[i].done = checkbox.checked;
+          saveAndRender();
+        };
+
+        deleteBtn.onclick = () => {
+          tasks.splice(i, 1);
+          saveAndRender();
+        };
+
+        taskList.appendChild(li);
+      });
+    }
+  }
+</script>
+
   </script>
 </body>
 </html>
